@@ -25,6 +25,7 @@ public class MainJFrame extends javax.swing.JFrame {
     public MainJFrame() {
         initComponents();
         setLocationRelativeTo(null); //Open JFrame in center Screen
+        this.setResizable(false); // Disable window resizing
         conn = MySQLConnection.Connect();       
         LoadData();
     }
@@ -48,11 +49,11 @@ public class MainJFrame extends javax.swing.JFrame {
         PricejLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         BilljTable = new javax.swing.JTable();
-        QtyjSpinner = new javax.swing.JSpinner();
         AddjButton = new javax.swing.JButton();
         totaljLabel = new javax.swing.JLabel();
         totaljLabel1 = new javax.swing.JLabel();
         PrintjButton = new javax.swing.JButton();
+        QtyjTextField = new javax.swing.JTextField();
         jMenuBar = new javax.swing.JMenuBar();
         jMenu = new javax.swing.JMenu();
         AddNewItemjMenu = new javax.swing.JMenuItem();
@@ -121,9 +122,6 @@ public class MainJFrame extends javax.swing.JFrame {
             BilljTable.getColumnModel().getColumn(4).setMaxWidth(200);
         }
 
-        QtyjSpinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        QtyjSpinner.setModel(new javax.swing.SpinnerNumberModel(1.0d, 1.0d, null, 1.0d));
-
         AddjButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         AddjButton.setText("Add");
         AddjButton.addActionListener(new java.awt.event.ActionListener() {
@@ -143,6 +141,13 @@ public class MainJFrame extends javax.swing.JFrame {
         PrintjButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PrintjButtonActionPerformed(evt);
+            }
+        });
+
+        QtyjTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        QtyjTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                QtyjTextFieldKeyTyped(evt);
             }
         });
 
@@ -179,13 +184,12 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(ItemNamejLabel1)
                                 .addComponent(jLabel3))
                             .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(AddjButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(QtyjSpinner)
-                                    .addComponent(PricejLabel)
-                                    .addComponent(ItemCodejComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(PrintjButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(AddjButton, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                .addComponent(PricejLabel)
+                                .addComponent(ItemCodejComboBox, 0, 120, Short.MAX_VALUE)
+                                .addComponent(PrintjButton, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                .addComponent(QtyjTextField))
                             .addGap(29, 29, 29)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(ItemNamejLabel)
@@ -211,7 +215,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(QtyjSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(QtyjTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(AddjButton)
                         .addGap(18, 18, 18)
@@ -247,7 +251,7 @@ public class MainJFrame extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
-            
+            QtyjTextField.setText("1");
             
         }
         
@@ -256,7 +260,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void AddjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddjButtonActionPerformed
         DefaultTableModel model = (DefaultTableModel) BilljTable.getModel();
         double price = Double.parseDouble(PricejLabel.getText());
-        double qty = (Double)QtyjSpinner.getValue();
+        double qty = Double.parseDouble(QtyjTextField.getText());
         double value = price * qty;
         
         try {
@@ -264,7 +268,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 ItemCodejComboBox.getSelectedItem().toString(), 
                 ItemNamejLabel.getText(), 
                 price,
-                QtyjSpinner.getValue(), 
+                qty, 
                 value  });    
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -281,7 +285,7 @@ public class MainJFrame extends javax.swing.JFrame {
         
         ItemNamejLabel.setText("[item_name]");
         PricejLabel.setText("[price]");
-        QtyjSpinner.setValue(1);
+        QtyjTextField.setText("1");
         ItemCodejComboBox.setSelectedIndex(-1);
         
         
@@ -299,6 +303,14 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_PrintjButtonActionPerformed
+
+    private void QtyjTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_QtyjTextFieldKeyTyped
+        // Allow only numbers ======= 
+        char c = evt.getKeyChar();        
+        if(!Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_QtyjTextFieldKeyTyped
 
 // Document: https://docs.oracle.com/javase/tutorial/2d/printing/printable.html
 public class Printing implements Printable {
@@ -414,7 +426,7 @@ public class Printing implements Printable {
     private javax.swing.JLabel ItemNamejLabel1;
     private javax.swing.JLabel PricejLabel;
     private javax.swing.JButton PrintjButton;
-    private javax.swing.JSpinner QtyjSpinner;
+    private javax.swing.JTextField QtyjTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
