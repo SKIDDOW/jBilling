@@ -2,18 +2,10 @@ package jbilling;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.print.PrinterException;
 import java.sql.*;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.print.PrinterJob;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.Printable;
-import static java.awt.print.Printable.NO_SUCH_PAGE;
-import static java.awt.print.Printable.PAGE_EXISTS;
+import java.awt.print.*;
 /**
  *
  * @author SKIDDOW
@@ -54,6 +46,12 @@ public class MainJFrame extends javax.swing.JFrame {
         totaljLabel1 = new javax.swing.JLabel();
         PrintjButton = new javax.swing.JButton();
         QtyjTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        CashjTextField = new javax.swing.JTextField();
+        totaljLabel2 = new javax.swing.JLabel();
+        cashjLabel = new javax.swing.JLabel();
+        totaljLabel3 = new javax.swing.JLabel();
+        BalancejLabel = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenu = new javax.swing.JMenu();
         AddNewItemjMenu = new javax.swing.JMenuItem();
@@ -62,7 +60,6 @@ public class MainJFrame extends javax.swing.JFrame {
         setTitle("JBilling System");
         setMaximumSize(new java.awt.Dimension(1024, 768));
         setMinimumSize(new java.awt.Dimension(1024, 768));
-        setPreferredSize(new java.awt.Dimension(1024, 768));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("JBilling System");
@@ -134,7 +131,7 @@ public class MainJFrame extends javax.swing.JFrame {
         totaljLabel.setText("[total]");
 
         totaljLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        totaljLabel1.setText("Bill TOTAL");
+        totaljLabel1.setText("TOTAL");
 
         PrintjButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         PrintjButton.setText("Print");
@@ -150,6 +147,43 @@ public class MainJFrame extends javax.swing.JFrame {
                 QtyjTextFieldKeyTyped(evt);
             }
         });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Cash");
+
+        CashjTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        CashjTextField.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                CashjTextFieldInputMethodTextChanged(evt);
+            }
+        });
+        CashjTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CashjTextFieldActionPerformed(evt);
+            }
+        });
+        CashjTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CashjTextFieldKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CashjTextFieldKeyTyped(evt);
+            }
+        });
+
+        totaljLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        totaljLabel2.setText("CASH");
+
+        cashjLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        cashjLabel.setText("[cash]");
+
+        totaljLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        totaljLabel3.setText("BALANCE");
+
+        BalancejLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        BalancejLabel.setText("[cash]");
 
         jMenu.setText("File");
 
@@ -175,26 +209,41 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(totaljLabel1)
-                            .addGap(40, 40, 40)
-                            .addComponent(totaljLabel))
-                        .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addComponent(ItemNamejLabel1)
-                                .addComponent(jLabel3))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(AddjButton, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                .addComponent(PricejLabel)
-                                .addComponent(ItemCodejComboBox, 0, 120, Short.MAX_VALUE)
-                                .addComponent(PrintjButton, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                .addComponent(QtyjTextField))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(ItemNamejLabel1)
+                                        .addComponent(jLabel3))
+                                    .addGap(18, 18, 18))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(53, 53, 53)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(CashjTextField)
+                                .addComponent(AddjButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                .addComponent(PricejLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ItemCodejComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 120, Short.MAX_VALUE)
+                                .addComponent(PrintjButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                .addComponent(QtyjTextField, javax.swing.GroupLayout.Alignment.LEADING))
                             .addGap(29, 29, 29)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(ItemNamejLabel)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(82, Short.MAX_VALUE))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(totaljLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cashjLabel))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(totaljLabel1)
+                                .addGap(40, 40, 40)
+                                .addComponent(totaljLabel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(totaljLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BalancejLabel)))))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,13 +268,25 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(AddjButton)
                         .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(CashjTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(91, 91, 91)
                         .addComponent(PrintjButton))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(totaljLabel)
                     .addComponent(totaljLabel1))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cashjLabel)
+                    .addComponent(totaljLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BalancejLabel)
+                    .addComponent(totaljLabel3))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
 
         pack();
@@ -312,6 +373,23 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_QtyjTextFieldKeyTyped
 
+    private void CashjTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CashjTextFieldKeyTyped
+        
+    }//GEN-LAST:event_CashjTextFieldKeyTyped
+
+    private void CashjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CashjTextFieldKeyPressed
+        double cash = Double.parseDouble(CashjTextField.getText());
+        cashjLabel.setText(String.format("%.2f", cash));
+    }//GEN-LAST:event_CashjTextFieldKeyPressed
+
+    private void CashjTextFieldInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_CashjTextFieldInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CashjTextFieldInputMethodTextChanged
+
+    private void CashjTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CashjTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CashjTextFieldActionPerformed
+
 // Document: https://docs.oracle.com/javase/tutorial/2d/printing/printable.html
 public class Printing implements Printable {
     
@@ -348,7 +426,8 @@ public class Printing implements Printable {
         g.drawString(BilljTable.getModel().getValueAt(i, 2).toString(), 40, y+y+10); // Price 
         g.drawString(BilljTable.getModel().getValueAt(i, 3).toString(), 130, y+y+10); // qty
         g.drawString(BilljTable.getModel().getValueAt(i, 4).toString(), 220, y+y+10); // value
-    }     
+    }
+    g.setFont(new Font("Monospaced",Font.BOLD,14));
     g.drawString("TOTAL", 1, y+y+30);
     g.drawString(totaljLabel.getText(), 220, y+y+30);
 
@@ -420,20 +499,26 @@ public class Printing implements Printable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddNewItemjMenu;
     private javax.swing.JButton AddjButton;
+    private javax.swing.JLabel BalancejLabel;
     private javax.swing.JTable BilljTable;
+    private javax.swing.JTextField CashjTextField;
     private javax.swing.JComboBox<String> ItemCodejComboBox;
     private javax.swing.JLabel ItemNamejLabel;
     private javax.swing.JLabel ItemNamejLabel1;
     private javax.swing.JLabel PricejLabel;
     private javax.swing.JButton PrintjButton;
     private javax.swing.JTextField QtyjTextField;
+    private javax.swing.JLabel cashjLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel totaljLabel;
     private javax.swing.JLabel totaljLabel1;
+    private javax.swing.JLabel totaljLabel2;
+    private javax.swing.JLabel totaljLabel3;
     // End of variables declaration//GEN-END:variables
 }

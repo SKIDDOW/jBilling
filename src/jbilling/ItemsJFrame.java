@@ -3,7 +3,6 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.*;
 import javax.swing.JLabel;
-import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -206,8 +205,9 @@ public class ItemsJFrame extends javax.swing.JFrame {
     private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitButtonActionPerformed
         // Insert data
         MySQLConnection con = new MySQLConnection();
-        con.ExecuteQuery("INSERT INTO items(item_code, item_name) "
-                    + "VALUES('"+Integer.parseInt(ItemCodeTextBox.getText())+"','"+ItemNameTextBox.getText()+"')");
+        con.ExecuteQuery("INSERT INTO items(item_code, item_name, price) "
+                    + "VALUES('"+Integer.parseInt(ItemCodeTextBox.getText())+"','"
+                +ItemNameTextBox.getText()+"', '"+Double.parseDouble(PriceTextBox.getText())+"')");
         SetNull();
         LoadData();
         
@@ -247,8 +247,7 @@ public class ItemsJFrame extends javax.swing.JFrame {
 
     private void UpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateButtonActionPerformed
         MySQLConnection con = new MySQLConnection();
-        con.ExecuteQuery("UPDATE items SET item_name='"+ItemNameTextBox.getText()+"', price='"+PriceTextBox.getText()+"'" 
-            +"WHERE item_code="+ItemCodeTextBox.getText());        
+        con.ExecuteQuery("UPDATE items SET item_name='"+ItemNameTextBox.getText()+"', price='"+Double.parseDouble(PriceTextBox.getText())+"' WHERE  item_code="+ItemCodeTextBox.getText()+"");        
         SetNull();        
         LoadData();
     }//GEN-LAST:event_UpdateButtonActionPerformed
