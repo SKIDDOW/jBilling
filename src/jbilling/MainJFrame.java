@@ -167,7 +167,7 @@ public class MainJFrame extends javax.swing.JFrame {
         totaljLabel3.setText("BALANCE");
 
         balancejLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        balancejLabel.setText("[cash]");
+        balancejLabel.setText("[bal]");
 
         jMenu.setText("File");
 
@@ -319,8 +319,7 @@ public class MainJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
         
-        // Calculate total bill
-                   
+        // Calculate total bill                   
         for (int i = 0; i < BilljTable.getRowCount(); i++){
             double val = (double) BilljTable.getModel().getValueAt(i, 4);
             total = total + val;
@@ -331,8 +330,7 @@ public class MainJFrame extends javax.swing.JFrame {
         ItemNamejLabel.setText("[item_name]");
         PricejLabel.setText("[price]");
         QtyjTextField.setText("1");
-        ItemCodejComboBox.setSelectedIndex(-1);
-        
+        ItemCodejComboBox.setSelectedIndex(-1);        
         
     }//GEN-LAST:event_AddjButtonActionPerformed
     
@@ -347,6 +345,22 @@ public class MainJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
         total = 0;
+        ItemCodejComboBox.setSelectedIndex(-1);
+        ItemNamejLabel.setText("[item_name]");
+        PricejLabel.setText("[price]");
+        QtyjTextField.setText("1");
+        CashjTextField.setText(null);
+        totaljLabel.setText("[total]");
+        cashjLabel.setText("[cash]");
+        balancejLabel.setText("[bal]");
+        
+        // Clear table rows
+        DefaultTableModel model = (DefaultTableModel) BilljTable.getModel(); 
+        int rows = model.getRowCount(); 
+        for(int i = rows - 1; i >=0; i--)
+        {
+           model.removeRow(i); 
+        } 
         
     }//GEN-LAST:event_PrintjButtonActionPerformed
 
@@ -431,8 +445,7 @@ public class Printing implements Printable {
     return PAGE_EXISTS;
   }
     
-}
-    
+}    
     
     private void LoadData(){
         conn = MySQLConnection.Connect();
@@ -449,9 +462,7 @@ public class Printing implements Printable {
         ItemNamejLabel.setText("[item_name]");
         PricejLabel.setText("[price]");
         
-    }
-    
-    
+    } 
     
     
     /**
