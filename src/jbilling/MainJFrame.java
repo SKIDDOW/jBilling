@@ -6,6 +6,8 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.print.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MainJFrame extends javax.swing.JFrame {
 
@@ -48,7 +50,7 @@ public class MainJFrame extends javax.swing.JFrame {
         totaljLabel2 = new javax.swing.JLabel();
         cashjLabel = new javax.swing.JLabel();
         totaljLabel3 = new javax.swing.JLabel();
-        BalancejLabel = new javax.swing.JLabel();
+        balancejLabel = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenu = new javax.swing.JMenu();
         AddNewItemjMenu = new javax.swing.JMenuItem();
@@ -149,24 +151,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel4.setText("Cash");
 
         CashjTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        CashjTextField.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                CashjTextFieldInputMethodTextChanged(evt);
-            }
-        });
         CashjTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CashjTextFieldActionPerformed(evt);
-            }
-        });
-        CashjTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                CashjTextFieldKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                CashjTextFieldKeyTyped(evt);
             }
         });
 
@@ -179,8 +166,8 @@ public class MainJFrame extends javax.swing.JFrame {
         totaljLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         totaljLabel3.setText("BALANCE");
 
-        BalancejLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        BalancejLabel.setText("[cash]");
+        balancejLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        balancejLabel.setText("[cash]");
 
         jMenu.setText("File");
 
@@ -239,7 +226,7 @@ public class MainJFrame extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(totaljLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(BalancejLabel)))))
+                                .addComponent(balancejLabel)))))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -281,7 +268,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(totaljLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BalancejLabel)
+                    .addComponent(balancejLabel)
                     .addComponent(totaljLabel3))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
@@ -314,7 +301,7 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_ItemCodejComboBoxItemStateChanged
-
+    double total = 0; 
     private void AddjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddjButtonActionPerformed
         DefaultTableModel model = (DefaultTableModel) BilljTable.getModel();
         double price = Double.parseDouble(PricejLabel.getText());
@@ -333,12 +320,12 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         
         // Calculate total bill
-        double total = 0;            
+                   
         for (int i = 0; i < BilljTable.getRowCount(); i++){
             double val = (double) BilljTable.getModel().getValueAt(i, 4);
             total = total + val;
             
-            totaljLabel.setText(Double.toString(total));
+            totaljLabel.setText(String.format("%.2f", total));
         }
         
         ItemNamejLabel.setText("[item_name]");
@@ -359,6 +346,7 @@ public class MainJFrame extends javax.swing.JFrame {
         } catch (PrinterException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
+        total = 0;
         
     }//GEN-LAST:event_PrintjButtonActionPerformed
 
@@ -370,21 +358,12 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_QtyjTextFieldKeyTyped
 
-    private void CashjTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CashjTextFieldKeyTyped
-        
-    }//GEN-LAST:event_CashjTextFieldKeyTyped
-
-    private void CashjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CashjTextFieldKeyPressed
+    private void CashjTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CashjTextFieldActionPerformed
         double cash = Double.parseDouble(CashjTextField.getText());
         cashjLabel.setText(String.format("%.2f", cash));
-    }//GEN-LAST:event_CashjTextFieldKeyPressed
-
-    private void CashjTextFieldInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_CashjTextFieldInputMethodTextChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CashjTextFieldInputMethodTextChanged
-
-    private void CashjTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CashjTextFieldActionPerformed
-        // TODO add your handling code here:
+        
+        double def = cash - total;
+        balancejLabel.setText(String.format("%.2f", def));
     }//GEN-LAST:event_CashjTextFieldActionPerformed
 
 // Document: https://docs.oracle.com/javase/tutorial/2d/printing/printable.html
@@ -398,6 +377,11 @@ public class Printing implements Printable {
     if (page > 0) {
          return NO_SUCH_PAGE;
     }
+    
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyMMddHHmm");  
+    DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+    LocalDateTime now = LocalDateTime.now();
+    
 
     // User (0,0) is typically outside the
     // imageable area, so we must translate
@@ -406,16 +390,22 @@ public class Printing implements Printable {
     Graphics2D g2d = (Graphics2D)g;
     g2d.translate(pf.getImageableX(), pf.getImageableY());
 
+    g.setFont(new Font("Monospaced",Font.BOLD,18));
+    g.drawString("COMPANY NAME", 100, 12);
+    g.setFont(new Font("Monospaced",Font.PLAIN,9));
+    g.drawString("091-2222222 Galle, Sri Lanka", 90, 20);
+    g.drawString("INV NO:" +dtf.format(now), 1, 35);
+    g.drawString("DATE:" +dt.format(now), 130, 35);
     g.setFont(new Font("Monospaced",Font.PLAIN,11));
-    g.drawString("_____________________________________________", 1, 1);
-    g.drawString("_____________________________________________", 1, 12);
-    g.drawString("Item", 1, 12);
-    g.drawString("Price", 40, 12);
-    g.drawString("Qty.", 130, 12);
-    g.drawString("Value", 220, 12);
-    g.drawString("|", 300, 12);
+    g.drawString("_____________________________________________", 1, 40);
+    g.drawString("_____________________________________________", 1, 55);
+    g.drawString("Item", 1, 55);
+    g.drawString("Price", 40, 55);
+    g.drawString("Qty.", 130, 55);
+    g.drawString("Value", 220, 55);
+    g.drawString("|", 300, 55);
     // Now we perform our rendering
-    int y = 5;
+    int y = 25;
     for (int i = 0; i < BilljTable.getRowCount(); i++){
         y += 10;
         g.drawString(BilljTable.getModel().getValueAt(i, 0).toString(), 1, y+y); // Item code
@@ -427,6 +417,14 @@ public class Printing implements Printable {
     g.setFont(new Font("Monospaced",Font.BOLD,14));
     g.drawString("TOTAL", 1, y+y+30);
     g.drawString(totaljLabel.getText(), 220, y+y+30);
+    g.drawString("CASH", 1, y+y+45);
+    g.drawString(cashjLabel.getText(), 220, y+y+45);
+    g.drawString("BALANCE", 1, y+y+60);
+    g.drawString(balancejLabel.getText(), 220, y+y+60);
+    g.setFont(new Font("Monospaced",Font.BOLD,12));
+    g.drawString("Thank you!", 130, y+y+80);
+    g.setFont(new Font("Monospaced",Font.PLAIN,11));
+    g.drawString("SOFTWARE BY 3IDIOTS :)", 100, y+y+90);
 
     // tell the caller that this page is part
     // of the printed document
@@ -496,7 +494,6 @@ public class Printing implements Printable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddNewItemjMenu;
     private javax.swing.JButton AddjButton;
-    private javax.swing.JLabel BalancejLabel;
     private javax.swing.JTable BilljTable;
     private javax.swing.JTextField CashjTextField;
     private javax.swing.JComboBox<String> ItemCodejComboBox;
@@ -505,6 +502,7 @@ public class Printing implements Printable {
     private javax.swing.JLabel PricejLabel;
     private javax.swing.JButton PrintjButton;
     private javax.swing.JTextField QtyjTextField;
+    private javax.swing.JLabel balancejLabel;
     private javax.swing.JLabel cashjLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
