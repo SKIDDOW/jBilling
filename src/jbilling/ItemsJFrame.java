@@ -4,10 +4,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.*;
 import javax.swing.JLabel;
 
-/**
- *
- * @author SKIDDOW
- */
 public class ItemsJFrame extends javax.swing.JFrame {
 
     Connection conn = null;

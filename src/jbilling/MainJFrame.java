@@ -6,10 +6,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.print.*;
-/**
- *
- * @author SKIDDOW
- */
+
 public class MainJFrame extends javax.swing.JFrame {
 
     Connection conn = null;

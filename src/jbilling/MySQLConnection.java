@@ -2,10 +2,6 @@ package jbilling;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Honey s3c
- */
 public class MySQLConnection {
     
     public static Connection Connect(){
