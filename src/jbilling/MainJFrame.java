@@ -404,6 +404,8 @@ public class Printing implements Printable {
     Graphics2D g2d = (Graphics2D)g;
     g2d.translate(pf.getImageableX(), pf.getImageableY());
 
+    // Now we perform our rendering
+    
     g.setFont(new Font("Monospaced",Font.BOLD,18));
     g.drawString("COMPANY NAME", 100, 12);
     g.setFont(new Font("Monospaced",Font.PLAIN,9));
@@ -418,7 +420,7 @@ public class Printing implements Printable {
     g.drawString("Qty.", 130, 55);
     g.drawString("Value", 220, 55);
     g.drawString("|", 300, 55);
-    // Now we perform our rendering
+    
     int y = 25;
     for (int i = 0; i < BilljTable.getRowCount(); i++){
         y += 10;
@@ -438,7 +440,7 @@ public class Printing implements Printable {
     g.setFont(new Font("Monospaced",Font.BOLD,12));
     g.drawString("Thank you!", 130, y+y+80);
     g.setFont(new Font("Monospaced",Font.PLAIN,11));
-    g.drawString("SOFTWARE BY 3IDIOTS :)", 100, y+y+90);
+    g.drawString("SOFTWARE BY SKIDDOW :)", 100, y+y+90);
 
     // tell the caller that this page is part
     // of the printed document
